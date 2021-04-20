@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+
+<h1>Web socket API Client</h1>
+
+<div>
+	<input id="name" type="text"/>
+	<button id="openButton">Open</button>
+	<button id="closeButton">Close</button>
+</div>
+<div id="divmsg">
+
+</div>
+
+<script>
+	var demoService;
+	var username;
+	$(document).ready(function () {
+		$("#closeButton").click(function () {
+			if (demoService.OPEN == undefined) {
+				$('#divmsg').append("(0_0) > No Connection <br/>");
+				$('#divmsg').append("------------------------------------------<br/>");
+			}
+			else if (demoService.OPEN) {
+				demoService.close();
+			}
+			console.log("closebutton ");
+			$('#name').val('');
+		});
+		$("#openButton").click(function () {
+			username = $('#name').val();
+			$('#name').val('');
+			console.log(username);
+			if (demoService && demoService.readyState == 1) {
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionOne",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionTwo",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionThree",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionFour",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionFive",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionFive",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionSix",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionSeven",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionEight",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionNine",
+						name: username
+					}
+				));
+				demoService.send(JSON.stringify(
+					{
+						url: "Home/ActionTen",
+						name: username
+					}
+				));
+			}
+			else if (demoService && demoService.readyState == 3) {
+				websocks();
+			}			
+		});
+		websocks();
+		function websocks() {
+			var url = "wss://localhost:44348/api/values";
+			demoService = new WebSocket(url);
+			console.log("openbutton " + url);
+		
+
+			demoService.onopen = function () {				
+				$('#divmsg').append("Client > Connection openned<br/>");
+				if (username != undefined) { 
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionOne",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionTwo",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionThree",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionFour",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionFive",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionFive",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionSix",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionSeven",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionEight",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionNine",
+							name: username
+						}
+					));
+					demoService.send(JSON.stringify(
+						{
+							url: "Home/ActionTen",
+							name: username
+						}
+					));
+				}
+			}
+
+			demoService.onmessage = function (message) {
+				var md = message.data;
+				$('#divmsg').append("Client > (return onMessage from server ): " + md + "<br/>");
+			}
+			demoService.onclose = function (message) {
+				$('#divmsg').append("Client > (onclose server message) " + message + "<br/>");
+				$('#divmsg').append("Client > Connection closed<br/>");
+				$('#divmsg').append("------------------------------------------<br/>");
+			}
+			demoService.onerror = function (error) {
+				$('#divmsg').append("Client > (error server) : " + error);
+			}}
+	});
+
+
+</script>
